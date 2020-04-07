@@ -1,5 +1,4 @@
-import React, {Component, useState} from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
 import UserOutput from './UserOutput';
 import UserInput from './UserInput';
@@ -9,27 +8,62 @@ const App = () => {
     const [personsAr, setPersonsArr] = useState({
         persons: [
             {name: "shehroz", age: 28},
-            {name: "ali", age: 25},
         ]
     });
 
 
     const inpChangeHandler = (event) => {
-        console.log(1);
         setPersonsArr({
             persons: [
-                {name: event.target.value, age: 28},
-                {name: "ali", age: 25},
+                {name: event.target.value, age: personsAr.persons[0].age},
             ]
         });
     };
 
+    const changeAgeHandler = (event) => {
+        setPersonsArr({
+            persons: [
+                {name: personsAr.persons[0].name, age: event.target.value},
+            ]
+        })
+    };
+
+    const [showDiv, setShowDiv] = useState({
+        showDiv: true
+    });
+
+    const toggleHandler = () => {
+        const doesShow = showDiv.showDiv;
+        setShowDiv({
+            showDiv: !doesShow
+        });
+    };
+
+
+    let myDiv = null;
+
+    if (showDiv.showDiv) {
+        myDiv = <div>
+            <UserOutput name={personsAr.persons[0].name} age={personsAr.persons[0].age}/>
+        </div>;
+    }
     return (
         <div>
-            <UserInput change={inpChangeHandler}/>
-            <UserOutput name={personsAr.persons[0].name} age={personsAr.persons[0].age}/>
-            <UserOutput name={personsAr.persons[1].name} age={personsAr.persons[1].age}/>
+            <button onClick={toggleHandler}> My button</button>
+            <UserInput change={inpChangeHandler} name={personsAr.persons[0].name} changeAge={changeAgeHandler}
+                       age={personsAr.persons[0].age}/>
+            {myDiv}
+            {/* {
+                showDiv.showDiv ?
+                    <div>
+                        <UserOutput name={personsAr.persons[0].name} age={personsAr.persons[0].age}/>
+                    </div>
+
+                    : null
+            }*/}
+
         </div>
+
     );
 };
 
