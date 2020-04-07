@@ -7,7 +7,7 @@ import UserInput from './UserInput';
 const App = () => {
     const [personsAr, setPersonsArr] = useState({
         persons: [
-            {name: "shehroz", age: 28},
+            {key: 1, name: "shehroz", age: 28},
         ]
     });
 
@@ -15,7 +15,7 @@ const App = () => {
     const inpChangeHandler = (event) => {
         setPersonsArr({
             persons: [
-                {name: event.target.value, age: personsAr.persons[0].age},
+                {key: 1, name: event.target.value, age: personsAr.persons[0].age},
             ]
         });
     };
@@ -23,7 +23,7 @@ const App = () => {
     const changeAgeHandler = (event) => {
         setPersonsArr({
             persons: [
-                {name: personsAr.persons[0].name, age: event.target.value},
+                {key: 1, name: personsAr.persons[0].name, age: event.target.value},
             ]
         })
     };
@@ -43,15 +43,27 @@ const App = () => {
     let myDiv = null;
 
     if (showDiv.showDiv) {
-        myDiv = <div>
-            <UserOutput name={personsAr.persons[0].name} age={personsAr.persons[0].age}/>
-        </div>;
+        myDiv =
+            <div>
+                {
+                    personsAr.persons.map(person => {
+                        return <UserOutput name={person.name} age={person.age} key={person.key}/>
+                    })
+                }
+            </div>
+        ;
     }
     return (
         <div>
             <button onClick={toggleHandler}> My button</button>
-            <UserInput change={inpChangeHandler} name={personsAr.persons[0].name} changeAge={changeAgeHandler}
-                       age={personsAr.persons[0].age}/>
+            {
+                personsAr.persons.map((person, index) => {
+                    return <UserInput change={inpChangeHandler} name={person.name} changeAge={changeAgeHandler}
+                                      age={person.age} key={person.key}/>
+                })
+            }
+            {/*  <UserInput change={inpChangeHandler} name={personsAr.persons[0].name} changeAge={changeAgeHandler}
+                       age={personsAr.persons[0].age}/>*/}
             {myDiv}
             {/* {
                 showDiv.showDiv ?
